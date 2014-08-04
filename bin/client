@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+'use strict';
+
+var ptClient = require( '../client' );
+var argv = require( 'yargs' )
+	.usage( 'Usage: $0 --app [app name]' )
+	.describe( 'app', 'the name of the internal pow app' )
+	.argv;
+
+if( argv.version ) {
+	console.log( require( '../package' ).version );
+	process.exit( 0 );
+}
+
+if( argv.app == null ) {
+	console.error( 'Missing required argument: app' );
+	require( 'yargs' ).showHelp();
+	process.exit( 1 );
+}
+
+var opt = {
+	app: argv.app
+};
+
+ptClient( opt.app, opt, function( tunnel ) {
+	console.log( 'your url is: %s', tunnel.url );
+});
